@@ -15,9 +15,9 @@ def readCSV(filename,savename,secondTrajectory,secondTrajectorysavename):
 	yQ = data_df['Y']
 	zQ = data_df['Z']
 	w = data_df['W']
-	x = data_df['X']
-	y = data_df['Y']
-	z = data_df['Z']
+	x = data_df['X.1']
+	y = data_df['Y.1']
+	z = data_df['Z.1']
 	
 	##Conversion from mm to metres
 	x = x/1000
