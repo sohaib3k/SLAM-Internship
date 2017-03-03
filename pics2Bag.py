@@ -15,24 +15,25 @@ def numericalSort(value):
     parts = numbers.split(value)
     parts[1::2] = map(int, parts[1::2])
     return parts
-def CreateVideoBag(LOC):
-	right =  sorted(glob.glob(LOC),key=numericalSort)
+def CreateVideoBag():
+	right =  sorted(glob.glob('pics_30-1-17/*.png'),key=numericalSort)
 	print "Total Images " + str(len(right))
     	bag = rosbag.Bag("monoBag", 'w')
 	cb = CvBridge()
-	frame_id = 161
-	time = 11.666667;
-	frame = 0.066666667;
+	frame_id = 565
+	time = 18.333333333;
+	frame = 0.033333333;
 	for x in range(len(right)):
-		
-        	stamp = rospy.rostime.Time.from_sec(time + frame)
+		time = time+frame
+		print time
+        	stamp = rospy.rostime.Time.from_sec(time)
 		
 		frame_id +=1
 		rightImg = cv2.imread(right[x])
 
 
 		kernel = np.zeros((9,9),np.float32)
-		kernel[4,4] = 3.0
+		kernel[4,4] = 4.0
 		boxFilter = np.ones((9,9),np.float32)/81
 		kernel = kernel - boxFilter
 
@@ -43,16 +44,19 @@ def CreateVideoBag(LOC):
 
         	image2.header.stamp = stamp
         	image2.header.frame_id = "camera"
-		
+		#if frame_id > 175:
+			#print frame_id
+			#time = time+frame;
        		bag.write("camera/image_raw", image2, stamp)
 
-	bag.close()
-	if __name__ == "__main__":
-    if len( sys.argv ) == 2:
-        CreateVideoBag(*sys.argv[2])
-    else:
-        print( "Usage: Record_02/*.png")
+		#else:
+		#	print "Missed"
 
+
+
+	bag.close()
+	print frame_id
+CreateVideoBag()
 
 
 
